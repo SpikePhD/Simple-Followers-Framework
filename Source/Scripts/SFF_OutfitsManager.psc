@@ -16,6 +16,7 @@
 Scriptname SFF_OutfitsManager extends Quest
 import StorageUtil
 import JsonUtil
+import StringUtil
 
 ; ---------- Properties ----------
 Actor  Property PlayerRef Auto
@@ -117,7 +118,7 @@ Event OnOutfitCommand(String eventName, String cmd, float numArg, Form sender)
     ; -------- text "remove:<tag>" parsing --------
     if cmd != ""
         if StartsWith(cmd, "remove:")
-            tag = cmd.Substring(7) ; after "remove:"
+            tag = StringUtil.SubString(cmd, 7) ; after "remove:"
             if tag == "adventure"
                 RemoveSetForActor(a, KEY_ADVENTURE)
             ElseIf tag == "town"
@@ -577,7 +578,7 @@ Actor Function FindLoadedActorByName(String nm)
     return None
 EndFunction
 
-; Simple helper — default to Skyrim.esm; expand if you need plugin detection.
+; Simple helper Â— default to Skyrim.esm; expand if you need plugin detection.
 String Function GetPluginFor(Form f)
     return "Skyrim.esm"
 EndFunction
@@ -660,7 +661,7 @@ Bool Function StartsWith(String s, String prefix)
     if s == "" || prefix == ""
         return False
     endif
-    Int pos = s.Find(prefix)
+    Int pos = StringUtil.Find(s, prefix)
     if pos == 0
         return True
     endif
