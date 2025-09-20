@@ -71,7 +71,6 @@ EndFunction
 ; ======================================================================
 Event OnOutfitCommand(String eventName, String cmd, float numArg, Form sender)
     ; ---- declare locals first ----
-    String tag = ""
     Int    slotIdx = numArg as Int
     Actor  a = GetFollowerBySlot(slotIdx)
 
@@ -116,15 +115,14 @@ Event OnOutfitCommand(String eventName, String cmd, float numArg, Form sender)
 
     ; -------- text "remove:<tag>" parsing --------
     if cmd != ""
-        if StartsWith(cmd, "remove:")
-            tag = cmd.Substring(7) ; after "remove:"
-            if tag == "adventure"
-                RemoveSetForActor(a, KEY_ADVENTURE)
-            ElseIf tag == "town"
-                RemoveSetForActor(a, KEY_TOWN)
-            ElseIf tag == "home"
-                RemoveSetForActor(a, KEY_HOME)
-            endif
+        if cmd == "remove:" + KEY_ADVENTURE
+            RemoveSetForActor(a, KEY_ADVENTURE)
+            return
+        ElseIf cmd == "remove:" + KEY_TOWN
+            RemoveSetForActor(a, KEY_TOWN)
+            return
+        ElseIf cmd == "remove:" + KEY_HOME
+            RemoveSetForActor(a, KEY_HOME)
             return
         endif
     endif
@@ -577,7 +575,7 @@ Actor Function FindLoadedActorByName(String nm)
     return None
 EndFunction
 
-; Simple helper — default to Skyrim.esm; expand if you need plugin detection.
+; Simple helper Â— default to Skyrim.esm; expand if you need plugin detection.
 String Function GetPluginFor(Form f)
     return "Skyrim.esm"
 EndFunction
@@ -651,18 +649,4 @@ Function UnequipSetFromActor_JSON(Actor a, String base, Int count)
         endif
         i += 1
     endwhile
-EndFunction
-
-; ======================================================================
-; Small string helper
-; ======================================================================
-Bool Function StartsWith(String s, String prefix)
-    if s == "" || prefix == ""
-        return False
-    endif
-    Int pos = s.Find(prefix)
-    if pos == 0
-        return True
-    endif
-    return False
 EndFunction
